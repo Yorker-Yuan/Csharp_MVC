@@ -1,0 +1,29 @@
+$baseSize:12px;
+$baseFontFamily:monospace,sans-serif;
+%baseStyle{
+  margin:0 auto;
+}
+*{
+  margin: 0;
+  padding: 0;
+}
+html{
+  font-size: $baseSize;
+  font-family: $baseFontFamily;
+  @extend %baseStyle;
+}
+header{
+  text-align: center;
+  margin: 20px auto;
+}
+section{
+  @extend %baseStyle;
+}
+.container{
+  >img{
+    @extend %baseStyle;
+  }
+}
+footer{
+  text-align: center;
+}
