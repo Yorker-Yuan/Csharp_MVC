@@ -1,19 +1,8 @@
-﻿@model smallWorld.RouteConfig
-
+﻿
 @{
-    Layout = null;
+    ViewBag.Title = "會員註冊驗證";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Verify</title>
-</head>
-<body>
-    <div> 
-        <h2>@ViewData["Result"]</h2>
-    </div>
-</body>
-</html>
+<h2>會員註冊驗證</h2>
+<p>@ViewData["Result"]</p>

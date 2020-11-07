@@ -23,6 +23,7 @@
             <div class="navbar-nav">
                 @if (Request.IsAuthenticated)
                 {
+                    @Html.ActionLink("管理","Profile","Account",new { @class= "nav-link" })
                     @Html.ActionLink("登出", "Logout", "Home", new { @class = "nav-link" })
                 }
             </div>
@@ -32,7 +33,7 @@
     @if (Request.IsAuthenticated)
     {
         <header>
-            <h2>@(User.Identity.Name) 歡迎登入Small World</h2>
+            <h2>@(User.Identity.Name) @(WebsiteHelper.getRole) 歡迎登入Small World</h2>
         </header>
         <div class="container">
             <div class="row justify-content-center">
