@@ -22,6 +22,6 @@ namespace smallWorld.Models
         public string fEmail { get; set; }
         public Nullable<System.DateTime> fBuildtime { get; set; }
         public string fAuthCode { get; set; }
-        public int fRole { get; set; }
+        public int fRole { get; set; }  //1:一般用戶 ; 2:VIP用戶 ; 3:管理員
     }
 }

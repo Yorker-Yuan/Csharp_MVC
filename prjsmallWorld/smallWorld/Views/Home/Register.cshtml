@@ -20,6 +20,25 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Small World</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                @if (!Request.IsAuthenticated)
+                {
+                    @Html.ActionLink("登入", "Login", "Home", new { @class = "nav-link" })
+                    @Html.ActionLink("註冊", "Register", "Home", new { @class = "nav-link" })
+                }
+                else
+                {
+                    @Html.ActionLink("登出", "Logout", "Home", new { @class = "nav-link" })
+                }
+            </div>
+        </div>
+    </nav>
     <header>
         <h2>Small World會員註冊</h2>
     </header>

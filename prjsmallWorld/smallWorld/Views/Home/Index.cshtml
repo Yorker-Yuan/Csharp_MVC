@@ -21,12 +21,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                @if (!Request.IsAuthenticated)
-                {
-                    @Html.ActionLink("登入", "Login", "Home", new { @class = "nav-link" })
-                    @Html.ActionLink("註冊", "Register", "Home", new { @class = "nav-link" })
-                }
-                else
+                @if (Request.IsAuthenticated)
                 {
                     @Html.ActionLink("登出", "Logout", "Home", new { @class = "nav-link" })
                 }
@@ -43,41 +38,6 @@
             <div class="row justify-content-center">
                 <img src="~/Content/images/welcome.jpg" alt="">
 
-            </div>
-        </div>
-    }
-    else
-    {
-        <header>
-            <h2>Small World會員登入系統</h2>
-        </header>
-        <div class="container">
-            <div class="row">
-                <section>
-                    <form action="">
-                        <div class="form-group">
-                            <label for="account">帳號</label>
-                            <input type="text"
-                                   class="form-control"
-                                   id="account"
-                                   aria-describedby="accountHelp">
-                            <small id="accountHelp"
-                                   class="form-text text-muted">We'll never share your email with anyone else.</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">密碼</label>
-                            <input type="password"
-                                   class="form-control"
-                                   id="password">
-                        </div>
-                        <button type="submit"
-                                class="btn btn-primary">
-                            登入
-                        </button>
-                        <button type="reset" class="btn btn-warning">清除</button>
-
-                    </form>
-                </section>
             </div>
         </div>
     }

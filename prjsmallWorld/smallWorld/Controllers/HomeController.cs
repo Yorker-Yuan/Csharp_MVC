@@ -7,12 +7,15 @@ using System.Linq;
 using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using System.Runtime.CompilerServices;
 
 namespace smallWorld.Controllers
 {
     public class HomeController : Controller
     {
         // GET: Home
+        []
         public ActionResult Index()
         {
             return View();
@@ -105,15 +108,86 @@ namespace smallWorld.Controllers
         }
 
         #endregion
-#region 登入
+        #region 登入
         public ActionResult Login()
         {
             return View();
         }
-#endregion
-        public ActionResult Logout()
+        [HttpPost]
+        public ActionResult Login(string fAccount,string fPassword)
         {
+            //用戶登入通過驗證
+            if (ValidateLogin(fAccount, fPassword))
+            {
+                //執行將用戶登入到網站並授予存取權
+                LoginProcess(fAccount, strRole, false);
+                return RedirectToAction("Index");
+            }
+            else {
+                ModelState.AddModelError("validatemsg_fAccount", "輸入的帳號或密碼錯誤，請重來");
+            }
             return View();
         }
+        //宣告私有字串
+        private string strRole = "User";
+        //用戶登入存取權限
+        private void LoginProcess(string strUser,string strRole,bool isRemember)
+        {
+            //登入前清空所有session資料
+            Session.RemoveAll();
+            //表單票證通行
+            FormsAuthenticationTicket objfat = new FormsAuthenticationTicket(
+                1,//版本    
+                strUser,//欲存放在User.Identy.Name值,通常是使用者帳號
+                DateTime.Now,//核發日期
+                DateTime.Now.AddMinutes(30),//到期日期(30分鐘)
+                false,//將管理者登入的cookie設定成session cookie(持續性)
+                strRole,//userData(使用者專屬資料)
+                FormsAuthentication.FormsCookiePath//cookie路徑
+                );
+            //建立包含適用於http_cookie加密的表單驗證票證字串
+            string strEncryptTicket = FormsAuthentication.Encrypt(objfat);
+            //將加密的票證字串存入cookie
+            Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName,strEncryptTicket));
+        }
+        //用戶登入驗證
+        private bool ValidateLogin(string fAccount,string fPassword)
+        {
+            //用戶密碼加密後處理
+            //string strHashPassword = HashPassword(fPassword);
+            string strHashPassword = fPassword;
+
+            using (dbCustomerEntities db = new dbCustomerEntities())
+            {
+                //取得符合條件單筆資料
+                Member member = db.Member.Where(a => a.fAccount == fAccount && a.fPassword == fPassword).FirstOrDefault();
+                if (member != null)
+                {
+                    //會員未點擊驗證碼連結
+                    if (member.fAuthCode != null)
+                    {
+                        ModelState.AddModelError("fAccount", "信箱尚未驗證成功");
+                        return false;
+                    }
+                    //若用戶為管理者
+                    if (member.fRole == 3)
+                    {
+                        strRole = "Admin";
+                    }
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        #endregion
+        #region 登出
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login");
+        }
+        #endregion
     }
 }
