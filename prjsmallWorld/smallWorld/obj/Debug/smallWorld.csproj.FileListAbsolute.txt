@@ -82,4 +82,3 @@ C:\Users\User\Desktop\Csharp_MVC\prjsmallWorld\smallWorld\obj\Debug\smallWorld.c
 C:\Users\User\Desktop\Csharp_MVC\prjsmallWorld\smallWorld\obj\Debug\smallWorld.dll
 C:\Users\User\Desktop\Csharp_MVC\prjsmallWorld\smallWorld\obj\Debug\smallWorld.pdb
 C:\Users\User\Desktop\Csharp_MVC\prjsmallWorld\smallWorld\bin\MvcPaging.dll
-C:\Users\User\Desktop\Csharp_MVC\prjsmallWorld\smallWorld\obj\Debug\smallWorld.csprojAssemblyReference.cache

@@ -101,10 +101,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\dbCustomer.mdf" />
-    <Content Include="App_Data\dbCustomer_log.ldf">
-      <DependentUpon>dbCustomer.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -153,18 +149,18 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="dbCustomer.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>dbCustomer.edmx</DependentUpon>
+      <LastGenOutput>dbCustomer.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="dbCustomer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>dbCustomer.edmx</DependentUpon>
+      <LastGenOutput>dbCustomer.cs</LastGenOutput>
+    </Content>
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Models\CustomerModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CustomerModel.Context.cs</LastGenOutput>
-      <DependentUpon>CustomerModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\CustomerModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CustomerModel.edmx</DependentUpon>
-      <LastGenOutput>CustomerModel.cs</LastGenOutput>
-    </Content>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -173,6 +169,13 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <EntityDeploy Include="dbCustomer.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>dbCustomer.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="dbCustomer.edmx.diagram">
+      <DependentUpon>dbCustomer.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -198,43 +201,36 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="dbCustomer.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbCustomer.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="dbCustomer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbCustomer.tt</DependentUpon>
+    </Compile>
+    <Compile Include="dbCustomer.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbCustomer.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\CMember.cs" />
-    <Compile Include="Models\CustomerModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CustomerModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CustomerModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CustomerModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\CustomerModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CustomerModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Member.cs">
-      <DependentUpon>CustomerModel.tt</DependentUpon>
+    <Compile Include="Member.cs">
+      <DependentUpon>dbCustomer.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MailService.cs" />
+    <Compile Include="Services\MemberService.cs" />
     <Compile Include="ViewModel\CLogin.cs" />
     <Compile Include="ViewModel\CRegister.cs" />
     <Compile Include="WebsiteHelper\WebsiteHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
-    <EntityDeploy Include="Models\CustomerModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CustomerModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\CustomerModel.edmx.diagram">
-      <DependentUpon>CustomerModel.edmx</DependentUpon>
-    </Content>
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-3.5.1.slim.min.map" />
@@ -250,6 +246,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
     <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>

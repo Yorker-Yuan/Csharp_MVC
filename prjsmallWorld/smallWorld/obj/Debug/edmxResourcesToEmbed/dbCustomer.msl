@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="dbCustomerModelStoreContainer" CdmEntityContainer="dbCustomerEntities">
+    <EntitySetMapping Name="Member">
+      <EntityTypeMapping TypeName="dbCustomerModel.Member">
+        <MappingFragment StoreEntitySet="Member">
+          <ScalarProperty Name="fMemberId" ColumnName="fMemberId" />
+          <ScalarProperty Name="fAccount" ColumnName="fAccount" />
+          <ScalarProperty Name="fPassword" ColumnName="fPassword" />
+          <ScalarProperty Name="fName" ColumnName="fName" />
+          <ScalarProperty Name="fBirthday" ColumnName="fBirthday" />
+          <ScalarProperty Name="fEmail" ColumnName="fEmail" />
+          <ScalarProperty Name="fBuildtime" ColumnName="fBuildtime" />
+          <ScalarProperty Name="fAuthCode" ColumnName="fAuthCode" />
+          <ScalarProperty Name="fRole" ColumnName="fRole" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,5 +1,4 @@
-﻿using smallWorld.Models;
-using smallWorld.ViewModel;
+﻿using smallWorld.ViewModel;
 using System;
 using System.Transactions;
 using System.Collections.Generic;
@@ -10,14 +9,17 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Runtime.CompilerServices;
 using smallWorld.Services;
+using System.Data.Entity.Validation;
+using System.Data.Entity.Infrastructure;
 
 namespace smallWorld.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly MemberService memberservice = new MemberService();
         private readonly MailService mailservice = new MailService();
         // GET: Home
-
+        [Authorize]
         public ActionResult Index()
         {
             return View();
@@ -30,7 +32,7 @@ namespace smallWorld.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Register([Bind(Exclude = "fBuildtime,fAuthCode,fRole")]CRegister member)
+        public ActionResult Register([Bind(Exclude = "buildTime,authCode,Role")]CRegister member)
         {
             if (ModelState.IsValid)
             {
@@ -39,7 +41,7 @@ namespace smallWorld.Controllers
                     using (dbCustomerEntities db = new dbCustomerEntities())
                     {
                         //當用戶已存在
-                        if (db.Member.Where(a => a.fAccount == member.newMember.account).FirstOrDefault() != null)
+                        if (db.Member.Where(a => a.fAccount == member.account).FirstOrDefault() != null)
                         {
                             //設定模型驗證欄位狀態失敗顯示訊息
                             ModelState.AddModelError("newMember.account","您註冊的帳號已經被使用，請重新設定");
@@ -49,17 +51,7 @@ namespace smallWorld.Controllers
                         //宣告與建構交易式物件操作案例並自動釋放占用資源 => 確保資料可以寫入資料庫且必須完成
                         using (TransactionScope ts = new TransactionScope())
                         {
-                            Member c = new Member();
-                            c.fBirthday = member.newMember.birthday;
-                            c.fEmail = member.newMember.email;
-                            c.fName = member.newMember.name;
-                            c.fBuildtime = DateTime.Now;
-                            c.fRole = 1;
-                            c.fAuthCode = Guid.NewGuid().ToString();
-                            //c.fPassword = HashPassword(member.fPassword);
-                            c.fPassword = member.password;
-                            db.Member.Add(c);
-                            db.SaveChanges();
+                            memberservice.Register(member);
                             //寄信
                             //取得驗證信範本
                             string tempmail = System.IO.File.ReadAllText(
@@ -69,14 +61,14 @@ namespace smallWorld.Controllers
                             {
                                 Path = Url.Action("emailValidate", "Home", new
                                 {
-                                    account = c.fAccount,
-                                    authcode = c.fAuthCode
+                                    account = member.account,
+                                    authcode = member.authCode
                                 })
                             };
                             //填入驗證信
-                            string mailBody = mailservice.getRegisterMailBody(tempmail, c.fName, vUri.ToString().Replace("%3F", "?"));
+                            string mailBody = mailservice.getRegisterMailBody(tempmail, member.name, vUri.ToString().Replace("%3F", "?"));
                             //寄信
-                            mailservice.sendRegisterMail(mailBody, c.fEmail);
+                            mailservice.sendRegisterMail(mailBody, member.email);
                             //用tempData儲存註冊訊息
                             TempData["RegisterState"] = "註冊成功，請去收信以驗證email";
                             //設定所有交易皆已完成
@@ -89,10 +81,19 @@ namespace smallWorld.Controllers
                 {
                     ModelState.AddModelError("newMember.email", "系統發生異常，目前無法寄送驗證信，請稍後再試");
                 }
-                catch (Exception e)
+                catch (DbEntityValidationException e)
                 {
-                    ModelState.AddModelError("newMember.account", e.Message.ToString());
-                    return View(member);
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
+                    throw;
                 }
                 return RedirectToAction("Login");
             }
@@ -130,21 +131,10 @@ namespace smallWorld.Controllers
         public ActionResult emailValidation(string account, string AuthCode)
         {
             //用ViewData儲存，使用Service進行信箱驗證後的結果訊息
-            ViewData["emailValidate"] = memberservice.emailValidate(account, AuthCode);
+            ViewData["emailValidate"] = memberservice.emailValidation(account, AuthCode);
             return View();
         }
-        //加密
-        private string HashPassword(string str)
-        {
-            string strHash = "";
-            //字串雜湊編碼
-            System.Security.Cryptography.SHA1 objsha = System.Security.Cryptography.SHA1.Create();
-            System.Text.ASCIIEncoding objasc = new System.Text.ASCIIEncoding();
-            byte[] byteCom = objasc.GetBytes(str);
-            objsha.ComputeHash(byteCom);
-            strHash = Convert.ToBase64String(objsha.Hash);
-            return strHash;
-        }
+        
 
         #endregion
         #region 登入

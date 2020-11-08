@@ -8,9 +8,9 @@ namespace smallWorld.Services
 {
     public class MailService
     {
-        private string gmail_account = "";
-        private string gmail_password = "";
-        private string gmail_mail = "";
+        private string gmail_account = "Joutagroup445@gmail.com";
+        private string gmail_password = "admin123admin";
+        private string gmail_mail = "Joutagroup445@gmail.com";
 
         //將使用者資料填入驗證信
         public string getRegisterMailBody(string tempString, string userName, string validateUrl)
