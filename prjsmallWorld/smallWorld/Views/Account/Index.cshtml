@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Member>
+
+@{
+    ViewBag.Title = "會員基本資料";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@functions{ 
+    public string setMarks(string password) {
+        string result = "";
+        for (int i = 1; i <= password.Length; i++)
+        {
+            result += "*";
+        }
+        return result;
+    }
+    public string setRole(int role) {
+        string roleName = "";
+        if (role == 1)
+            roleName = "User";
+        else if (role == 2)
+            roleName = "VIPUser";
+        else
+            roleName = "Admin";
+        return roleName;
+    }
+}
+<h2>會員基本資料</h2>
+
+<div>
+    <table class="table">
+        <tr>
+            <td>帳號</td>
+            <td>密碼</td>
+            <td>姓名</td>
+            <td>生日</td>
+            <td>信箱</td>
+            <td>建立時間</td>
+            <td>身分</td>
+        </tr>
+        @{
+            foreach (Member m in Model)
+            {
+                <tr>
+                    <td>@m.fAccount</td>
+                    <td>@setMarks(m.fPassword)</td>
+                    <td>@m.fName</td>
+                    <td>@m.fBirthday</td>
+                    <td>@m.fEmail</td>
+                    <td>@m.fBuildtime</td>
+                    <td>
+                        @setRole(m.fRole)
+                    </td>
+                    @if (m.fRole == 2)
+                    {
+                        <td>
+                            @Html.ActionLink("編輯", "Edit", "Account", new { id = m.fMemberId }, new { @class = "btn btn-success" })
+                        </td>
+                    }
+
+                    <td>
+                        @Html.ActionLink("變更密碼", "ResetPassword", "Account", new { id = m.fMemberId }, new { @class = "btn btn-warning" })
+                    </td>
+                </tr>
+            }
+
+                            }
+    </table>
+</div>

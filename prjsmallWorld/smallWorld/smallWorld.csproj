@@ -225,8 +225,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MailService.cs" />
     <Compile Include="Services\MemberService.cs" />
+    <Compile Include="UserRole.cs">
+      <DependentUpon>dbCustomer.tt</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\CLogin.cs" />
     <Compile Include="ViewModel\CRegister.cs" />
+    <Compile Include="WebRoleProvider.cs" />
     <Compile Include="WebsiteHelper\WebsiteHelper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +242,10 @@
     <Content Include="Views\Home\Verify.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\registerResult.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Account\SearchAccountRole.cshtml" />
+    <Content Include="Views\Account\EditAccountRole.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -248,7 +256,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

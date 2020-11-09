@@ -32,6 +32,7 @@ namespace smallWorld.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Register([Bind(Exclude = "buildTime,authCode,Role")]CRegister member)
         {
             if (ModelState.IsValid)
@@ -138,6 +139,7 @@ namespace smallWorld.Controllers
 
         #endregion
         #region 登入
+        [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
@@ -150,7 +152,7 @@ namespace smallWorld.Controllers
             {
                 //執行將用戶登入到網站並授予存取權
                 LoginProcess(c.account, strRole, false);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Home");
             }
             else {
                 ModelState.AddModelError("validatemsg_fAccount", "輸入的帳號或密碼錯誤，請重來");

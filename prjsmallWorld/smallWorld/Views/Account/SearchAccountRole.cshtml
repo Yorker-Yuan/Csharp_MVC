@@ -1,0 +1,41 @@
+﻿@model IEnumerable<smallWorld.UserRole>
+
+@{
+    ViewBag.Title = "權限列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>權限列表</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.fRole)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Member.fAccount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model=>model.Member.fName)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.fRole)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Member.fAccount)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Member.fName)
+    </td>
+    <td>
+        @Html.ActionLink("編輯", "EditAccountRole", new { id = item.fid }) |
+        @Html.ActionLink("刪除", "Delete", new { id = item.fid },new { OnClick="return confirm('確定要刪除嗎?')", Class="btn btn-danger"})
+    </td>
+</tr>
+}
+
+</table>

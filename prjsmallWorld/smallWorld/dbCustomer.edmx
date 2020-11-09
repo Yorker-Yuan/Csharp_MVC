@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="dbCustomerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="dbCustomerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Member">
           <Key>
             <PropertyRef Name="fMemberId" />
@@ -19,11 +19,51 @@
           <Property Name="fAuthCode" Type="nvarchar(max)" />
           <Property Name="fRole" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="fid" />
+          </Key>
+          <Property Name="fid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fUserId" Type="int" Nullable="false" />
+          <Property Name="fRole" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Member_Member">
+          <End Role="Member" Type="Self.Member" Multiplicity="1" />
+          <End Role="Member1" Type="Self.Member" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="fMemberId" />
+            </Principal>
+            <Dependent Role="Member1">
+              <PropertyRef Name="fMemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_Member">
+          <End Role="Member" Type="Self.Member" Multiplicity="1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="fMemberId" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="fUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="dbCustomerModelStoreContainer">
           <EntitySet Name="Member" EntityType="Self.Member" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Member_Member" Association="Self.FK_Member_Member">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="Member1" EntitySet="Member" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_Member" Association="Self.FK_UserRole_Member">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="dbCustomerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -40,10 +80,37 @@
           <Property Name="fBuildtime" Type="DateTime" Precision="3" />
           <Property Name="fAuthCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="fRole" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserRole" Relationship="dbCustomerModel.FK_UserRole_Member" FromRole="Member" ToRole="UserRole" />
         </EntityType>
         <EntityContainer Name="dbCustomerEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Member" EntityType="Self.Member" />
+          <EntitySet Name="UserRole" EntityType="dbCustomerModel.UserRole" />
+          <AssociationSet Name="FK_UserRole_Member" Association="dbCustomerModel.FK_UserRole_Member">
+            <End Role="Member" EntitySet="Member" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="fid" />
+          </Key>
+          <Property Name="fid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fUserId" Type="Int32" Nullable="false" />
+          <Property Name="fRole" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Member" Relationship="dbCustomerModel.FK_UserRole_Member" FromRole="UserRole" ToRole="Member" />
+        </EntityType>
+        <Association Name="FK_UserRole_Member">
+          <End Type="dbCustomerModel.Member" Role="Member" Multiplicity="1" />
+          <End Type="dbCustomerModel.UserRole" Role="UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Member">
+              <PropertyRef Name="fMemberId" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="fUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -62,6 +129,15 @@
                 <ScalarProperty Name="fBuildtime" ColumnName="fBuildtime" />
                 <ScalarProperty Name="fAuthCode" ColumnName="fAuthCode" />
                 <ScalarProperty Name="fRole" ColumnName="fRole" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRole">
+            <EntityTypeMapping TypeName="dbCustomerModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="fRole" ColumnName="fRole" />
+                <ScalarProperty Name="fUserId" ColumnName="fUserId" />
+                <ScalarProperty Name="fid" ColumnName="fid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

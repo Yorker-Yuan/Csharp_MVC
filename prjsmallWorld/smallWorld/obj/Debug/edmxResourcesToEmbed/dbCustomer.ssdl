@@ -14,7 +14,48 @@
     <Property Name="fAuthCode" Type="nvarchar(max)" />
     <Property Name="fRole" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="UserRole">
+    <Key>
+      <PropertyRef Name="fid" />
+    </Key>
+    <Property Name="fid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fUserId" Type="int" Nullable="false" />
+    <Property Name="fRole" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Member_Member">
+    <End Role="Member" Type="Self.Member" Multiplicity="1" />
+    <End Role="Member1" Type="Self.Member" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Member">
+        <PropertyRef Name="fMemberId" />
+      </Principal>
+      <Dependent Role="Member1">
+        <PropertyRef Name="fMemberId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserRole_Member">
+    <End Role="Member" Type="Self.Member" Multiplicity="1" />
+    <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Member">
+        <PropertyRef Name="fMemberId" />
+      </Principal>
+      <Dependent Role="UserRole">
+        <PropertyRef Name="fUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="dbCustomerModelStoreContainer">
     <EntitySet Name="Member" EntityType="Self.Member" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Member_Member" Association="Self.FK_Member_Member">
+      <End Role="Member" EntitySet="Member" />
+      <End Role="Member1" EntitySet="Member" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserRole_Member" Association="Self.FK_UserRole_Member">
+      <End Role="Member" EntitySet="Member" />
+      <End Role="UserRole" EntitySet="UserRole" />
+    </AssociationSet>
   </EntityContainer>
 </Schema>

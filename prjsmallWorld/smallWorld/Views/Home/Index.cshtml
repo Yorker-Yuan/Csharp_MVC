@@ -23,8 +23,8 @@
             <div class="navbar-nav">
                 @if (Request.IsAuthenticated)
                 {
-                    @Html.ActionLink("管理","Profile","Account",new { @class= "nav-link" })
-                    @Html.ActionLink("登出", "Logout", "Home", new { @class = "nav-link" })
+                    @Html.ActionLink("管理","Index","Account",new { },new { @class= "nav-link" })
+                    @Html.ActionLink("登出", "Logout", "Home", new { },new { @class = "nav-link" })
                 }
             </div>
         </div>

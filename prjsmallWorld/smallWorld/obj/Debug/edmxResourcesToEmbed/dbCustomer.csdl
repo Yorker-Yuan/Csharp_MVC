@@ -13,8 +13,35 @@
     <Property Name="fBuildtime" Type="DateTime" Precision="3" />
     <Property Name="fAuthCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="fRole" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="UserRole" Relationship="dbCustomerModel.FK_UserRole_Member" FromRole="Member" ToRole="UserRole" />
   </EntityType>
   <EntityContainer Name="dbCustomerEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Member" EntityType="Self.Member" />
+    <EntitySet Name="UserRole" EntityType="dbCustomerModel.UserRole" />
+    <AssociationSet Name="FK_UserRole_Member" Association="dbCustomerModel.FK_UserRole_Member">
+      <End Role="Member" EntitySet="Member" />
+      <End Role="UserRole" EntitySet="UserRole" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="UserRole">
+    <Key>
+      <PropertyRef Name="fid" />
+    </Key>
+    <Property Name="fid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fUserId" Type="Int32" Nullable="false" />
+    <Property Name="fRole" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Member" Relationship="dbCustomerModel.FK_UserRole_Member" FromRole="UserRole" ToRole="Member" />
+  </EntityType>
+  <Association Name="FK_UserRole_Member">
+    <End Type="dbCustomerModel.Member" Role="Member" Multiplicity="1" />
+    <End Type="dbCustomerModel.UserRole" Role="UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Member">
+        <PropertyRef Name="fMemberId" />
+      </Principal>
+      <Dependent Role="UserRole">
+        <PropertyRef Name="fUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>
