@@ -13,14 +13,15 @@ namespace smallWorld.Services
         public void Register(CRegister member)
         {
             Member c = new Member();
+            c.fAccount = member.account;
+            //c.fPassword = HashPassword(member.fPassword);
+            c.fPassword = member.password;
             c.fBirthday = member.birthday;
             c.fEmail = member.email;
             c.fName = member.name;
             c.fBuildtime = DateTime.Now;
             c.fRole = 1;
             c.fAuthCode = Guid.NewGuid().ToString();
-            //c.fPassword = HashPassword(member.fPassword);
-            c.fPassword = member.password;
             db.Member.Add(c);
             db.SaveChanges();
         }

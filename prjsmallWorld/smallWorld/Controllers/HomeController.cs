@@ -45,7 +45,7 @@ namespace smallWorld.Controllers
                         if (db.Member.Where(a => a.fAccount == member.account).FirstOrDefault() != null)
                         {
                             //設定模型驗證欄位狀態失敗顯示訊息
-                            ModelState.AddModelError("newMember.account","您註冊的帳號已經被使用，請重新設定");
+                            ModelState.AddModelError("account","您註冊的帳號已經被使用，請重新設定");
                             //回傳模型檢視結果
                             return View(member);
                         }
@@ -80,7 +80,8 @@ namespace smallWorld.Controllers
                 }
                 catch(SmtpException)
                 {
-                    ModelState.AddModelError("newMember.email", "系統發生異常，目前無法寄送驗證信，請稍後再試");
+                    ModelState.AddModelError("email", "系統發生異常，目前無法寄送驗證信，請稍後再試");
+
                 }
                 catch (DbEntityValidationException e)
                 {

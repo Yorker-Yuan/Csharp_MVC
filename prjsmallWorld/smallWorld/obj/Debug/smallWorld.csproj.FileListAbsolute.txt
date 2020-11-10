@@ -167,3 +167,4 @@ C:\Users\User\Desktop\prjsmallWorld\smallWorld\bin\zh-Hant\System.Web.Webpages.R
 C:\Users\User\Desktop\prjsmallWorld\smallWorld\bin\zh-Hant\System.Web.Helpers.resources.dll
 C:\Users\User\Desktop\prjsmallWorld\smallWorld\bin\zh-Hant\System.Web.Mvc.resources.dll
 C:\Users\User\Desktop\prjsmallWorld\smallWorld\obj\Debug\smallWorld.csproj.CopyComplete
+C:\Users\User\Desktop\Csharp_MVC\prjsmallWorld\smallWorld\obj\Debug\smallWorld.csprojAssemblyReference.cache
