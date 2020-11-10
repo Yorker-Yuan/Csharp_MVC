@@ -21,7 +21,7 @@ namespace smallWorld.Services
             c.fName = member.name;
             c.fBuildtime = DateTime.Now;
             c.fRole = 1;
-            c.fAuthCode = Guid.NewGuid().ToString();
+            //c.fAuthCode = Guid.NewGuid().ToString();
             db.Member.Add(c);
             db.SaveChanges();
         }

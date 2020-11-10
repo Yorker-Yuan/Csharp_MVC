@@ -228,6 +228,7 @@
     <Compile Include="UserRole.cs">
       <DependentUpon>dbCustomer.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\CData.cs" />
     <Compile Include="ViewModel\CLogin.cs" />
     <Compile Include="ViewModel\CRegister.cs" />
     <Compile Include="WebRoleProvider.cs" />

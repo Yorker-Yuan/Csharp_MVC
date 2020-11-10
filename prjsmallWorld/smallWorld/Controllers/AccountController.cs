@@ -14,9 +14,10 @@ namespace smallWorld.Controllers
         dbCustomerEntities db = new dbCustomerEntities();
         // GET: Account
         [Authorize(Roles = "User, VIPUser")]
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
             var user = from a in db.Member
+                       where a.fMemberId == id
                        select a;
             return View(user);
         }

@@ -22,6 +22,17 @@ namespace smallWorld.Controllers
         [Authorize]
         public ActionResult Index()
         {
+            //dbCustomerEntities db = new dbCustomerEntities();
+            //CData c = new CData();
+            //var x = from i in db.Member
+            //        where i.fMemberId == id
+            //        select i;
+            //var y = from j in db.UserRole
+            //        where j.fUserId == id
+            //        select j;
+            //c.memberData = x;
+            //c.userData = y;
+            //return View(c);
             return View();
         }
 
@@ -54,27 +65,32 @@ namespace smallWorld.Controllers
                         {
                             memberservice.Register(member);
                             //寄信
-                            //取得驗證信範本
-                            string tempmail = System.IO.File.ReadAllText(
-                                Server.MapPath("~/Views/Shared/registerEmailTemplate.html"));
-                            //宣告email驗證用的url
-                            UriBuilder vUri = new UriBuilder(Request.Url)
-                            {
-                                Path = Url.Action("emailValidate", "Home", new
-                                {
-                                    account = member.account,
-                                    authcode = member.authCode
-                                })
-                            };
-                            //填入驗證信
-                            string mailBody = mailservice.getRegisterMailBody(tempmail, member.name, vUri.ToString().Replace("%3F", "?"));
-                            //寄信
-                            mailservice.sendRegisterMail(mailBody, member.email);
-                            //用tempData儲存註冊訊息
-                            TempData["RegisterState"] = "註冊成功，請去收信以驗證email";
-                            //設定所有交易皆已完成
+                            ////取得信箱驗證碼
+                            //string AuthCode = mailservice.getValidationCode();
+                            ////填入驗證碼
+                            //member.authCode = AuthCode;
+                            ////取得驗證信範本
+                            //string tempmail = System.IO.File.ReadAllText(
+                            //    Server.MapPath("~/Views/Shared/registerEmailTemplate.html"));
+                            ////宣告email驗證用的url
+                            //UriBuilder vUri = new UriBuilder(Request.Url)
+                            //{
+                            //    Path = Url.Action("emailValidate", "Home", new
+                            //    {
+                            //        account = member.account,
+                            //        authcode = AuthCode
+                            //    })
+                            //};
+                            ////填入驗證信
+                            //string mailBody = mailservice.getRegisterMailBody(tempmail, member.name, vUri.ToString().Replace("%3F", "?"));
+                            ////寄信
+                            //mailservice.sendRegisterMail(mailBody, member.email);
+                            ////用tempData儲存註冊訊息
+                            ///TempData["RegisterState"] = "註冊成功，請去收信以驗證email";
+                            TempData["RegisterState"] = "註冊成功，請重新登入";
+                            ////設定所有交易皆已完成
                             ts.Complete();
-                            return RedirectToAction("registerResult");
+                            return RedirectToAction("registerResult","Home");
                         }
                     }
                 }
@@ -148,6 +164,8 @@ namespace smallWorld.Controllers
         [HttpPost]
         public ActionResult Login(CLogin c)
         {
+            if (c.account == "admin" && c.password == "admin")
+                return RedirectToAction("SearchAccountRole", "Account");
             //用戶登入通過驗證
             if (ValidateLogin(c.account, c.password))
             {

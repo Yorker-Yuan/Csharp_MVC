@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
+using System.Text;
 using System.Web;
 
 namespace smallWorld.Services
@@ -11,6 +12,22 @@ namespace smallWorld.Services
         private string gmail_account = "Joutagroup445@gmail.com";
         private string gmail_password = "admin123admin";
         private string gmail_mail = "Joutagroup445@gmail.com";
+
+        //產生驗證碼
+        public string getValidationCode()
+        {
+            //設定驗證碼字元陣列
+            string[] code = { "A","B","C","D","E","F","G","H","I","J","K","L","M",
+                "N","P","Q","R","S","T","U","V","W","X","Y","Z","1","2","3","4","5","6","7","8","9",
+                "a","b","c","d","e","f","g","h","i","j","k","l","m","n","p","q","r","s","t","u","v","w","x","y","z"};
+            string validateCode = string.Empty;     //設定初始為空
+            Random r = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                validateCode += code[r.Next(code.Count())];
+            }
+            return validateCode;
+        }
 
         //將使用者資料填入驗證信
         public string getRegisterMailBody(string tempString, string userName, string validateUrl)
