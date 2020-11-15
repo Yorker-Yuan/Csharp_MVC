@@ -1,0 +1,61 @@
+﻿@model smallWorld.Models.CRegister
+
+@{
+    ViewData["Title"] = "會員註冊頁";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>會員註冊頁</h1>
+
+<h4>歡迎註冊，輸入以下資訊加入我們</h4>
+<b class="text-danger">@ViewData["Message"]</b>
+<hr />
+<div class="row">
+    <div class="col-md-9">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="fAccount" class="control-label"></label>
+                <input asp-for="fAccount" class="form-control" />
+                <span asp-validation-for="fAccount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="fPassword" class="control-label"></label>
+                <input asp-for="fPassword" class="form-control" />
+                <span asp-validation-for="fPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="fPassword_confirm" class="control-label"></label>
+                <input asp-for="fPassword_confirm" class="form-control" />
+                <span asp-validation-for="fPassword_confirm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="fName" class="control-label"></label>
+                <input asp-for="fName" class="form-control" />
+                <span asp-validation-for="fName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="fBirthday" class="control-label"></label>
+                <input asp-for="fBirthday" class="form-control" />
+                <span asp-validation-for="fBirthday" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="fEmail" class="control-label"></label>
+                <input asp-for="fEmail" class="form-control" />
+                <span asp-validation-for="fEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="註冊" class="btn btn-primary" />
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
